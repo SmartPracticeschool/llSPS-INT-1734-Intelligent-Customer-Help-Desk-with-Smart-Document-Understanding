@@ -1,0 +1,413 @@
+{
+  "intents": [
+    {
+      "intent": "help",
+      "examples": [
+        {
+          "text": "there is a problem with heater"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "greetings",
+      "examples": [
+        {
+          "text": "hai"
+        },
+        {
+          "text": "hello"
+        },
+        {
+          "text": "good morning"
+        },
+        {
+          "text": "good afternoon"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "thanks",
+      "examples": [
+        {
+          "text": "my pleasure"
+        },
+        {
+          "text": "thank you"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "product_information",
+      "examples": [
+        {
+          "text": "how do i access the settings"
+        },
+        {
+          "text": "how to turn-on heater?"
+        },
+        {
+          "text": "how can i set the time?"
+        },
+        {
+          "text": "configure wifi setting"
+        },
+        {
+          "text": "heater is not working?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "order",
+      "examples": [
+        {
+          "text": "from which store we can buy a heater?"
+        },
+        {
+          "text": "how to order?"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "enquiry",
+      "examples": [
+        {
+          "text": "define heater"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "location",
+      "examples": [
+        {
+          "text": "where we can buy a heater"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "product",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "company",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "manufactures at",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "order",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "order",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "book",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "buy",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "enquiry",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "what",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "information",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "knowing",
+          "synonyms": []
+        },
+        {
+          "type": "synonyms",
+          "value": "define",
+          "synonyms": []
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "webhooks": [
+    {
+      "url": "https://eu-gb.functions.cloud.ibm.com/api/v1/web/sowmyabodakunti%40gmail.com_dev/default/functionassistant.json",
+      "name": "main_webhook",
+      "headers": []
+    }
+  ],
+  "dialog_nodes": [
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            ""
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_9_1591012751735",
+      "conditions": "anything_else",
+      "dialog_node": "response_6_1591090321661",
+      "previous_sibling": "response_9_1591090319415"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "\"<?$webhook_result_1.passages[0].passage_text?>\""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1591012751735",
+      "conditions": "$webhook_result_1",
+      "dialog_node": "response_9_1591090319415"
+    },
+    {
+      "type": "standard",
+      "title": "ask about product",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "input": "<?input_text?>"
+          },
+          "result_variable": "webhook_result_1"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#product_information",
+      "dialog_node": "node_9_1591012751735",
+      "previous_sibling": "node_1_1591104462956"
+    },
+    {
+      "type": "standard",
+      "title": "help",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "contact to our help line which is mentioned in the bill"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#help",
+      "dialog_node": "node_8_1591105154564",
+      "previous_sibling": "node_9_1591012751735"
+    },
+    {
+      "type": "standard",
+      "title": "Anything else",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "I didn't understand. You can try rephrasing."
+              },
+              {
+                "text": "Can you reword your statement? I'm not understanding."
+              },
+              {
+                "text": "I didn't get your meaning."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "Anything else",
+      "previous_sibling": "node_1_1591104761821",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "order",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "you can order at near by stores "
+              },
+              {
+                "text": "you can order by any onling shooping "
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#order || #location && @order",
+      "dialog_node": "node_1_1591104462956",
+      "previous_sibling": "node_10_1591104699921"
+    },
+    {
+      "type": "standard",
+      "title": "thank you",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "its my pleasure"
+              },
+              {
+                "text": "wellcome"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#thanks",
+      "dialog_node": "node_1_1591104761821",
+      "previous_sibling": "node_8_1591105154564"
+    },
+    {
+      "type": "standard",
+      "title": "greetings",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "hello"
+              },
+              {
+                "text": "hiii"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#greetings",
+      "dialog_node": "node_10_1591104699921",
+      "previous_sibling": "node_8_1591098892162"
+    },
+    {
+      "type": "standard",
+      "title": "enquiry",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "It is a machine which is used to raise the temperature."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#enquiry && @enquiry",
+      "dialog_node": "node_8_1591098892162",
+      "previous_sibling": "Welcome"
+    },
+    {
+      "type": "standard",
+      "title": "Welcome",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hello. How can I help you?"
+              },
+              {
+                "text": "hello,this is chatbot.how can I help you?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Welcome"
+    }
+  ],
+  "counterexamples": [],
+  "system_settings": {
+    "off_topic": {
+      "enabled": true
+    },
+    "disambiguation": {
+      "prompt": "Did you mean:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "None of the above"
+    },
+    "system_entities": {
+      "enabled": true
+    },
+    "human_agent_assist": {
+      "prompt": "Did you mean:"
+    },
+    "spelling_auto_correct": true
+  },
+  "learning_opt_out": false,
+  "name": "chatbot",
+  "language": "en",
+  "description": ""
+}
