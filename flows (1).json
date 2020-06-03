@@ -1,0 +1,175 @@
+[
+    {
+        "id": "e0186c5d.587e7",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "92404bcc.64f968",
+        "type": "ui_form",
+        "z": "e0186c5d.587e7",
+        "name": "",
+        "label": "",
+        "group": "67e3da09.b4ca94",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "enter the querry",
+                "value": "input",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "input": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 110,
+        "y": 300,
+        "wires": [
+            [
+                "6f3cfef1.5c1ff"
+            ]
+        ]
+    },
+    {
+        "id": "6f3cfef1.5c1ff",
+        "type": "function",
+        "z": "e0186c5d.587e7",
+        "name": "input parsing",
+        "func": "msg.payload=msg.payload.input;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 230,
+        "y": 180,
+        "wires": [
+            [
+                "74bc4e05.9dc6f",
+                "9ff62dc9.ecb23"
+            ]
+        ]
+    },
+    {
+        "id": "5e7fc146.a795f",
+        "type": "function",
+        "z": "e0186c5d.587e7",
+        "name": "parsing",
+        "func": "msg.payload.text=\"\";\nif(msg.payload.context.webhook_result_1){\n    for(var i in msg.payload.context.webhook_result_1.results){\n    msg.payload.text=msg.payload.text+\"\\n\"+msg.payload.context.webhook_result_1.results[i].text;\n}\n    msg.payload=msg.payload.text;\n}\nelse\nmsg.payload = msg.payload.output.text[0];\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 560,
+        "y": 220,
+        "wires": [
+            [
+                "22bd6050.ce93c"
+            ]
+        ]
+    },
+    {
+        "id": "74bc4e05.9dc6f",
+        "type": "ui_text",
+        "z": "e0186c5d.587e7",
+        "group": "67e3da09.b4ca94",
+        "order": 2,
+        "width": "5",
+        "height": "3",
+        "name": "",
+        "label": "you",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 360,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "22bd6050.ce93c",
+        "type": "ui_text",
+        "z": "e0186c5d.587e7",
+        "group": "247d57c8.23ef78",
+        "order": 2,
+        "width": "10",
+        "height": "10",
+        "name": "",
+        "label": "bot",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 720,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "9325401c.a4069",
+        "type": "debug",
+        "z": "e0186c5d.587e7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 680,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "9ff62dc9.ecb23",
+        "type": "watson-conversation-v1",
+        "z": "e0186c5d.587e7",
+        "name": "assistant",
+        "workspaceid": "3c4b282c-d02c-4e1c-89ce-4f7af205ada9",
+        "multiuser": false,
+        "context": false,
+        "empty-payload": false,
+        "service-endpoint": "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/104de6e0-01d0-4305-a682-d84cf4cb87fa",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 460,
+        "y": 120,
+        "wires": [
+            [
+                "9325401c.a4069",
+                "5e7fc146.a795f"
+            ]
+        ]
+    },
+    {
+        "id": "67e3da09.b4ca94",
+        "type": "ui_group",
+        "z": "",
+        "name": "chatbot",
+        "tab": "969a7e7d.6c27",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "247d57c8.23ef78",
+        "type": "ui_group",
+        "z": "",
+        "name": "output",
+        "tab": "969a7e7d.6c27",
+        "order": 3,
+        "disp": true,
+        "width": "10",
+        "collapse": false
+    },
+    {
+        "id": "969a7e7d.6c27",
+        "type": "ui_tab",
+        "z": 0,
+        "name": "node red MDCVW",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
